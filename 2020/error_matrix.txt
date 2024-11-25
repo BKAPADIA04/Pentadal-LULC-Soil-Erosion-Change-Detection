@@ -1,0 +1,104 @@
+Error matrix:
+List (4 elements)
+0: [779, 74, 14, 0]
+1: [138, 1730, 43, 1]
+2: [28, 124, 928, 0]
+3: [1, 23, 2, 584]
+
+Here's the analysis of the updated error matrix:
+
+```
+Error matrix:
+List (4 elements)
+0: [779, 74, 14, 0]
+1: [138, 1730, 43, 1]
+2: [28, 124, 928, 0]
+3: [1, 23, 2, 584]
+```
+
+### **Structure of the Matrix**
+As before, each row represents the actual class, and each column represents the predicted class. The diagonal values (in bold) represent the correct classifications, and the off-diagonal values represent misclassifications.
+
+---
+
+### **Interpretation of Rows**
+
+#### **Row 0** (True class: Urban Area):
+- **779** instances correctly classified as Urban Area (**true positives**).
+- **74** misclassified as Agriculture Area.
+- **14** misclassified as Deforested Area.
+- **0** misclassified as Riverbank Area.
+
+#### **Row 1** (True class: Agriculture Area):
+- **138** misclassified as Urban Area.
+- **1730** correctly classified as Agriculture Area (**true positives**).
+- **43** misclassified as Deforested Area.
+- **1** misclassified as Riverbank Area.
+
+#### **Row 2** (True class: Deforested Area):
+- **28** misclassified as Urban Area.
+- **124** misclassified as Agriculture Area.
+- **928** correctly classified as Deforested Area (**true positives**).
+- **0** misclassified as Riverbank Area.
+
+#### **Row 3** (True class: Riverbank Area):
+- **1** misclassified as Urban Area.
+- **23** misclassified as Agriculture Area.
+- **2** misclassified as Deforested Area.
+- **584** correctly classified as Riverbank Area (**true positives**).
+
+---
+
+### **Key Metrics**
+
+#### 1. **Per-Class Accuracy**
+The accuracy for each class is calculated as:
+\[
+\text{Class Accuracy} = \frac{\text{Correctly Classified Instances}}{\text{Total Instances for the Class}}
+\]
+
+- **Class 0 (Urban Area)**:
+  \[
+  \text{Accuracy} = \frac{779}{779 + 74 + 14 + 0} = \frac{779}{867} = 89.85\%
+  \]
+- **Class 1 (Agriculture Area)**:
+  \[
+  \text{Accuracy} = \frac{1730}{138 + 1730 + 43 + 1} = \frac{1730}{1912} = 90.45\%
+  \]
+- **Class 2 (Deforested Area)**:
+  \[
+  \text{Accuracy} = \frac{928}{28 + 124 + 928 + 0} = \frac{928}{1080} = 85.93\%
+  \]
+- **Class 3 (Riverbank Area)**:
+  \[
+  \text{Accuracy} = \frac{584}{1 + 23 + 2 + 584} = \frac{584}{610} = 95.74\%
+  \]
+
+#### 2. **Overall Accuracy**
+The overall accuracy is calculated as:
+\[
+\text{Overall Accuracy} = \frac{\text{Sum of Diagonal Elements}}{\text{Total Number of Instances}}
+\]
+\[
+\text{Overall Accuracy} = \frac{779 + 1730 + 928 + 584}{867 + 1912 + 1080 + 610} = \frac{4021}{4469} = 89.99\%
+\]
+
+#### 3. **Error Rate**
+\[
+\text{Error Rate} = 1 - \text{Overall Accuracy} = 1 - 0.8999 = 10.01\%
+\]
+
+#### 4. **Misclassification Patterns**
+- **Class 0 (Urban Area)**: Most errors are confused with **Class 1 (Agriculture Area)** (74 instances).
+- **Class 1 (Agriculture Area)**: Most errors are confused with **Class 0 (Urban Area)** (138 instances) and **Class 2 (Deforested Area)** (43 instances).
+- **Class 2 (Deforested Area)**: Errors are spread between **Class 1 (Agriculture Area)** (124 instances) and **Class 0 (Urban Area)** (28 instances).
+- **Class 3 (Riverbank Area)**: Minimal confusion, with **23 instances misclassified as Class 1 (Agriculture Area)**.
+
+---
+
+### **Comparison to the Previous Matrix**
+- Overall accuracy has slightly decreased (previously ~90.27%, now 89.99%).
+- Per-class accuracy for **Class 2 (Deforested Area)** has declined slightly, from 86.73% to 85.93%.
+- **Class 3 (Riverbank Area)** maintains a high accuracy with minimal misclassification.
+
+Would you like a deeper analysis of specific metrics, such as precision, recall, or F1-score for each class?

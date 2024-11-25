@@ -1,0 +1,89 @@
+Error matrix:
+List (4 elements)
+0: [755, 64, 7, 0]
+1: [160, 1795, 55, 6]
+2: [20, 134, 938, 0]
+3: [1, 19, 3, 594]
+
+
+The error matrix (also known as a confusion matrix) is a table that represents the performance of a classification model by comparing predicted class labels with actual class labels. Here's a breakdown of your matrix:
+
+```
+Error matrix:
+List (4 elements)
+0: [755, 64, 7, 0]
+1: [160, 1795, 55, 6]
+2: [20, 134, 938, 0]
+3: [1, 19, 3, 594]
+```
+
+### **Structure of the Matrix**
+Each row represents the actual class, and each column represents the predicted class. For a 4-class classification problem, the matrix dimensions are \(4 \times 4\). The diagonal values are the correctly classified instances for each class, while off-diagonal values represent misclassifications.
+
+#### **Legend for Rows and Columns**
+Assume your class labels are:
+- **0**: Urban Area  
+- **1**: Agriculture Area  
+- **2**: Deforested Area  
+- **3**: Riverbank Area  
+
+The rows (0, 1, 2, 3) correspond to the true labels, and the columns (0, 1, 2, 3) correspond to the predicted labels.
+
+---
+
+### **Interpretation**
+- **Row 0** (True class: Urban Area):
+  - **755** instances correctly classified as Urban Area (true positives).
+  - **64** misclassified as Agriculture Area.
+  - **7** misclassified as Deforested Area.
+  - **0** misclassified as Riverbank Area.
+
+- **Row 1** (True class: Agriculture Area):
+  - **160** misclassified as Urban Area.
+  - **1795** correctly classified as Agriculture Area (true positives).
+  - **55** misclassified as Deforested Area.
+  - **6** misclassified as Riverbank Area.
+
+- **Row 2** (True class: Deforested Area):
+  - **20** misclassified as Urban Area.
+  - **134** misclassified as Agriculture Area.
+  - **938** correctly classified as Deforested Area (true positives).
+  - **0** misclassified as Riverbank Area.
+
+- **Row 3** (True class: Riverbank Area):
+  - **1** misclassified as Urban Area.
+  - **19** misclassified as Agriculture Area.
+  - **3** misclassified as Deforested Area.
+  - **594** correctly classified as Riverbank Area (true positives).
+
+---
+
+### **Key Metrics**
+
+1. **Accuracy for Each Class**:
+   - Class 0 (Urban Area): \( \frac{755}{755 + 64 + 7 + 0} = 91.07\% \)
+   - Class 1 (Agriculture Area): \( \frac{1795}{160 + 1795 + 55 + 6} = 88.64\% \)
+   - Class 2 (Deforested Area): \( \frac{938}{20 + 134 + 938 + 0} = 86.73\% \)
+   - Class 3 (Riverbank Area): \( \frac{594}{1 + 19 + 3 + 594} = 96.25\% \)
+
+2. **Overall Accuracy**:
+   This can be calculated by dividing the total number of correct classifications by the total number of instances:
+   \[
+   \text{Overall Accuracy} = \frac{\text{Sum of Diagonal Elements}}{\text{Total Instances}} 
+   \]
+   \[
+   = \frac{755 + 1795 + 938 + 594}{\text{Sum of all matrix elements}}
+   \]
+
+3. **Error Rate**:
+   \[
+   \text{Error Rate} = 1 - \text{Overall Accuracy}
+   \]
+
+4. **Misclassification Patterns**:
+   - Most errors for class **0** (Urban Area) are confused with **1** (Agriculture Area).
+   - Class **1** (Agriculture Area) is occasionally confused with **0** and **2**.
+   - Class **2** (Deforested Area) has significant confusion with **1**.
+   - Class **3** (Riverbank Area) has the least misclassification.
+
+Let me know if you'd like assistance calculating the overall metrics or refining the classification!

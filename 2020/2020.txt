@@ -1,0 +1,342 @@
+//Overall accuracy:
+//0.8997538599239203
+
+// Define Geqiugou Basin boundaries (polygon based on coordinates)
+// NDVI, Normalised slope and normalised precipitation se predict soil erosion
+// Define each area as an ee.FeatureCollection with polygons using all provided coordinates
+
+
+// Extract individual polygons and convert to FeatureCollection
+var geometries = urbanAreaGeo.geometries(); // List of geometries
+var features = geometries.map(function(geometry) {
+  geometry = ee.Geometry(geometry); // Convert to Geometry object
+  var coords = geometry.coordinates();
+  if (coords.length < 4) {
+    print('Skipping invalid geometry:', geometry);
+    return null; // Skip invalid geometry
+  }
+  
+  // Wrap valid geometry into a Feature
+  return ee.Feature(ee.Geometry.Polygon(coords), {label: 0});
+});
+
+features = features.filter(ee.Filter.notNull(['label']));
+// Convert features to FeatureCollection
+var urbanArea = ee.FeatureCollection(features);
+
+// Extract individual polygons and convert to FeatureCollection
+var geometries1 = agricultureAreaGeo.geometries(); // List of geometries
+var features1 = geometries1.map(function(geometry) {
+  geometry = ee.Geometry(geometry); // Convert to Geometry object
+  var coords = geometry.coordinates();
+  if (coords.length < 4) {
+    print('Skipping invalid geometry:', geometry);
+    return null; // Skip invalid geometry
+  }
+  
+  // Wrap valid geometry into a Feature
+  return ee.Feature(ee.Geometry.Polygon(coords), {label: 1});
+});
+
+features1 = features1.filter(ee.Filter.notNull(['label']));
+// Convert features to FeatureCollection
+var agricultureArea = ee.FeatureCollection(features1);
+
+// Extract individual polygons and convert to FeatureCollection
+var geometries2 = deforestedAreaGeo.geometries(); // List of geometries
+var features2 = geometries2.map(function(geometry) {
+  geometry = ee.Geometry(geometry); // Convert to Geometry object
+  var coords = geometry.coordinates();
+  if (coords.length < 4) {
+    print('Skipping invalid geometry:', geometry);
+    return null; // Skip invalid geometry
+  }
+  
+  // Wrap valid geometry into a Feature
+  return ee.Feature(ee.Geometry.Polygon(coords), {label: 2});
+});
+
+features2 = features2.filter(ee.Filter.notNull(['label']));
+// Convert features to FeatureCollection
+var deforestedArea = ee.FeatureCollection(features2);
+
+
+var geometries3 = riverAreaGeo.geometries(); // List of geometries
+var features3 = geometries3.map(function(geometry) {
+  geometry = ee.Geometry(geometry); // Convert to Geometry object
+  var coords = geometry.coordinates();
+  if (coords.length < 4) {
+    print('Skipping invalid geometry:', geometry);
+    return null; // Skip invalid geometry
+  }
+  
+  // Wrap valid geometry into a Feature
+  return ee.Feature(ee.Geometry.Polygon(coords), {label: 3});
+});
+
+features3 = features3.filter(ee.Filter.notNull(['label']));
+// Convert features to FeatureCollection
+var riverbankArea = ee.FeatureCollection(features3);
+// var agricultureArea = ee.FeatureCollection([
+//   ee.Feature(ee.Geometry.Polygon([[
+//     [-63.11968730546402, -9.853411680253231],
+//     [-63.118828998579254, -9.865842439600701],
+//     [-63.11565326310562, -9.86609612368534],
+//     [-63.115052448286285, -9.869224877998985],
+//     [-63.111790882124176, -9.8693094385139],
+//     [-63.11119006730484, -9.880217562817435],
+//     [-63.108786808027496, -9.880302120508272],
+//     [-63.108786808027496, -9.884614533916096],
+//     [-63.08990405656265, -9.885121872952114],
+//     [-63.08818744279312, -9.883938080650388],
+//     [-63.084840045942535, -9.883938080650388],
+//     [-63.079604373945465, -9.880724908636443],
+//     [-63.07351039506363, -9.881147696221197],
+//     [-63.07170795060562, -9.887404888926037],
+//     [-63.0651848182814, -9.887404888926037],
+//     [-63.06449817277359, -9.876243326833837],
+//     [-63.0706779823439, -9.876158768099918],
+//     [-63.085097538007965, -9.8558640440371],
+//     [-63.08518336869644, -9.848929726923215],
+//     [-63.09024737931656, -9.849352555309764],
+//     [-63.09076236344742, -9.843771176994203],
+//     [-63.11968730546402, -9.853411680253231]
+//   ]]), {label: 0})  // Changed to numeric label
+// ]);
+
+// var urbanArea = ee.FeatureCollection([
+//   ee.Feature(ee.Geometry.Polygon([[
+//     [-63.05662495053652, -9.88816521843718],
+//     [-63.03516727841738, -9.888080662768322],
+//     [-63.0113063470209, -9.887996107077697],
+//     [-63.01147800839785, -9.896367014902877],
+//     [-63.01499706662539, -9.896367014902877],
+//     [-63.014911235936914, -9.910656253362152],
+//     [-63.00855976498965, -9.910571703485594],
+//     [-63.008645595678125, -9.912939091788466],
+//     [-63.01147800839785, -9.913023641054576],
+//     [-63.01147800839785, -9.916912883722052],
+//     [-63.01379543698672, -9.918265652962129],
+//     [-63.01525455869082, -9.918350200854212],
+//     [-63.01525455869082, -9.918012009155005],
+//     [-63.01431042111758, -9.928242153586556],
+//     [-63.05568081296328, -9.915306462996826],
+//     [-63.05542332089785, -9.915221914319503],
+//     [-63.05653911984805, -9.888080662768322]
+//   ]]), {label: 1})  // Changed to numeric label
+// ]);
+
+// var deforestedArea = ee.FeatureCollection([
+//   ee.Feature(ee.Geometry.Polygon([[
+//     [-63.10652051669306, -9.910571703485594],
+//     [-63.10626302462763, -9.916870609593325],
+//     [-63.10995374423212, -9.916743787174399],
+//     [-63.110125405609075, -9.928284426247584],
+//     [-63.09579168063349, -9.921097995469921],
+//     [-63.09553418856806, -9.912474070435133],
+//     [-63.0990532467956, -9.912389521027297],
+//     [-63.09922490817255, -9.919153404740904],
+//     [-63.10231481295771, -9.918646118304697],
+//     [-63.10300145846552, -9.916870609593325],
+//     [-63.102915627777044, -9.910444878629878],
+//     [-63.10652051669306, -9.910571703485594]
+//   ]]), {label: 2})  // Changed to numeric label
+// ]);
+
+// var riverbankArea = ee.FeatureCollection([
+//   ee.Feature(ee.Geometry.Polygon([[
+//     [-63.10652051669306, -9.910571703485594],
+//     [-63.10626302462763, -9.916870609593325],
+//     [-63.10995374423212, -9.916743787174399],
+//     [-63.110125405609075, -9.928284426247584],
+//     [-63.09579168063349, -9.921097995469921],
+//     [-63.09553418856806, -9.912474070435133],
+//     [-63.0990532467956, -9.912389521027297],
+//     [-63.09922490817255, -9.919153404740904],
+//     [-63.10231481295771, -9.918646118304697],
+//     [-63.10300145846552, -9.916870609593325],
+//     [-63.102915627777044, -9.910444878629878],
+//     [-63.10652051669306, -9.910571703485594]
+//   ]]), {label: 3})  // Changed to numeric label
+// ]);
+
+
+// Function to mask clouds in Landsat 8 data
+function maskClouds(image) {
+  var qa = image.select('QA_PIXEL');
+  var cloudShadowBitMask = (1 << 3);
+  var cloudsBitMask = (1 << 5);
+  var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
+    .and(qa.bitwiseAnd(cloudsBitMask).eq(0));
+  return image.updateMask(mask);
+}
+
+// Function to add indices (NDVI, NDBI, NDWI)
+function addIndices(img) {
+  var ndvi = img.normalizedDifference(['SR_B5', 'SR_B4']).rename('NDVI');
+  var ndbi = img.normalizedDifference(['SR_B6', 'SR_B5']).rename('NDBI');
+  var ndwi = img.normalizedDifference(['SR_B3', 'SR_B5']).rename('NDWI');
+  return img.addBands(ndvi).addBands(ndbi).addBands(ndwi);
+}
+
+// Load DEM data and calculate slope
+var dem = ee.Image('USGS/SRTMGL1_003');  // SRTM DEM data
+var slope = ee.Terrain.slope(dem).rename('Slope'); // Calculate slope
+
+// Load and prepare Landsat 8 data
+var l8 = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
+  .filterBounds(agricultureArea.geometry().union(urbanArea.geometry())
+  .union(deforestedArea.geometry()).union(riverbankArea.geometry()))
+  .filterDate('2020-01-01', '2020-12-31')
+  .map(maskClouds)
+  .map(addIndices);
+
+// Prepare Landsat image with NDVI, NDBI, NDWI, and slope
+var image = l8.median()
+  .select(['SR_B5', 'SR_B6', 'SR_B4', 'NDVI', 'NDBI', 'NDWI'])
+  .addBands(slope); // Add slope as a band
+
+// Function to calculate the overall GMD (Geometric Mean Diameter)
+function calculateOverallGMD() {
+  var gmdSandySoil = 0.5; // Example GMD value for Sandy Soil
+  var gmdLoessSoil = 0.1; // Example GMD value for Loess Soil
+  var gmdCalcareousSoil = 0.2; // Example GMD value for Calcareous Soil
+  
+  // Calculate the geometric mean of the three GMD values
+  var gmdOverall = Math.pow(
+    gmdSandySoil * gmdLoessSoil * gmdCalcareousSoil,
+    1 / 3
+  );
+  
+  return gmdOverall;
+}
+
+// Formula to calculate the specific value based on GMD
+function applyFormulaToGMD(gmdOverall) {
+  var logGMD = Math.log(gmdOverall);
+  var formulaResult = 7.954 * (0.0017 + 0.0494 * Math.exp(
+    -0.5 * Math.pow((logGMD + 1.675) / 0.6986, 2)
+  ));
+  return formulaResult;
+}
+
+// Calculate the overall GMD
+var gmdOverall = calculateOverallGMD();
+
+// Apply the formula to the GMD
+var formulaResult = applyFormulaToGMD(gmdOverall);
+
+// Log the formula result for checking
+print('Formula Result:', formulaResult);
+
+// Calculate NDVI range (min and max) within the area of interest
+var ndviStats = image.select('NDVI').reduceRegion({
+  reducer: ee.Reducer.minMax(),
+  geometry: agricultureArea.geometry().union(urbanArea.geometry())
+    .union(deforestedArea.geometry()).union(riverbankArea.geometry()),
+  scale: 30,
+  bestEffort: true
+});
+print('NDVI Range:', ndviStats);
+
+// Load CHIRPS precipitation data for 2020
+var chirps = ee.ImageCollection('UCSB-CHG/CHIRPS/DAILY')
+  .filterBounds(agricultureArea.geometry().union(urbanArea.geometry())
+  .union(deforestedArea.geometry()).union(riverbankArea.geometry()))
+  .filterDate('2020-01-01', '2020-12-31');
+
+// Calculate annual precipitation
+var annualPrecipitation = chirps.sum().rename('Precipitation');
+
+// Normalize precipitation data to 0-1 scale
+var normalizedPrecipitation = annualPrecipitation.unitScale(0, 2000).rename('NormalizedPrecipitation');
+
+// Calculate Dynamic Erosion Risk Index
+var normalizedSlope = slope.unitScale(0, 90).rename('NormalizedSlope');
+var normalizedNDVI = image.select('NDVI').unitScale(-1, 1).rename('NormalizedNDVI');
+
+// Erosion risk = (transformed NDVI) * slope * precipitation
+var erosionIndex = normalizedSlope
+  .multiply(normalizedNDVI)
+  .multiply(normalizedPrecipitation)
+  .rename('ErosionRisk');
+
+// Multiply the result of the formula with the erosionIndex
+var finalErosionRisk = erosionIndex.multiply(formulaResult).rename('FinalErosionRisk');
+
+// Add final erosion risk to the map
+Map.addLayer(finalErosionRisk, {min: 0, max: 1, palette: ['white', 'red']}, 'Final Erosion Risk');
+// Add final erosion risk to the map with adjusted palette
+
+// Merge labeled regions into a single FeatureCollection for training
+var trainingData = agricultureArea.merge(urbanArea).merge(deforestedArea).merge(riverbankArea);
+
+// Sample regions for training
+var samples = image.sampleRegions({
+  collection: trainingData,
+  properties: ['label'],
+  scale: 30
+}).randomColumn('random');
+
+// Split samples into training and testing sets
+var split = 0.7;
+var trainingSet = samples.filter(ee.Filter.lt('random', split));
+var testingSet = samples.filter(ee.Filter.gte('random', split));
+
+// Train a Random Forest classifier
+var classifier = ee.Classifier.smileRandomForest(10).train({
+  features: trainingSet,
+  classProperty: 'label',
+  inputProperties: image.bandNames()
+});
+
+// var classifiedImage = /* your classified image */;Map.addLayer(classifiedImage, imageVisParam, 'Classified Image');
+
+// Center the map
+// Map.centerObject(classifiedImage, 10);
+
+// Classify the image
+var classifiedImage = image.classify(classifier);
+Map.addLayer(classifiedImage, imageVisParam, 'Classified Image');
+// Classify the testing set and calculate accuracy
+var validation = testingSet.classify(classifier);
+var testAccuracy = validation.errorMatrix('label', 'classification');
+print('Error matrix:', testAccuracy);
+print('Overall accuracy:', testAccuracy.accuracy());
+// Map.centerObject(classifiedImage, 10);
+// Add the classified image to the map
+// Map.addLayer(classifiedImage, {
+//   min: 0,
+//   max: 3,
+//   palette: ['green', 'gray', 'brown', 'blue']
+// }, 'Classified Image');
+
+// Export the final erosion risk to Google Drive
+Export.image.toDrive({
+  image: finalErosionRisk,
+  description: 'Final_Erosion_Risk_Index',
+  scale: 30,
+  region: agricultureArea.geometry().union(urbanArea.geometry())
+    .union(deforestedArea.geometry()).union(riverbankArea.geometry()),
+  fileFormat: 'GeoTIFF'
+});
+
+// Export the classified image to Google Drive
+Export.image.toDrive({
+  image: classifiedImage,
+  description: 'Classified_Image',
+  scale: 30,
+  region: agricultureArea.geometry().union(urbanArea.geometry())
+    .union(deforestedArea.geometry()).union(riverbankArea.geometry()),
+  fileFormat: 'GeoTIFF'
+});
+
+// Export the erosion index to Google Drive
+Export.image.toDrive({
+  image: erosionIndex,
+  description: 'Dynamic_Erosion_Risk_Index',
+  scale: 30,
+  region: agricultureArea.geometry().union(urbanArea.geometry())
+    .union(deforestedArea.geometry()).union(riverbankArea.geometry()),
+  fileFormat: 'GeoTIFF'
+});
